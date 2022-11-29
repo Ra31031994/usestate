@@ -2,19 +2,28 @@ import { useState } from "react";
 
     function Counter(props) {
         const {delta} = props
+        const {max} =props
         const[count, setCount] = useState(1)    
-
-    function incr(){
+    
+    
+        function incr(){
         setCount(
             function(oldCount){
-                return oldCount + delta
+                if (oldCount+delta >= max){
+                    return oldCount =1;
+                }
+                else{
+                    return oldCount+delta
+                }
+                
             }
         )
     }
-
+    
     function reset(){
         setCount(0)    
     }
+
 
     return (
       <div className="App">
