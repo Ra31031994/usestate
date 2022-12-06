@@ -1,18 +1,25 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
     function Counter(props) {
-        const {delta} = props
-        const {max} =props
+        const {delta, max, getReset, needToReset, getAllMax} = props
         const[count, setCount] = useState(1)    
     
-    
+        useEffect(()=>{
+            if(needToReset){
+                setCount(0)
+                getReset(false)
+            }
+        },[needToReset,getReset])
+
         function incr(){
         setCount(
             function(oldCount){
-                if (oldCount+delta >= max){
-                    return oldCount =1;
+                if (oldCount+delta > max){
+                    getAllMax(oldCount)
+                    return 1;
                 }
                 else{
+                    getAllMax(oldCount + delta)
                     return oldCount+delta
                 }
                 
@@ -21,7 +28,8 @@ import { useState } from "react";
     }
     
     function reset(){
-        setCount(0)    
+        getReset(true)
+        //setCount(0)    
     }
 
 
@@ -29,8 +37,10 @@ import { useState } from "react";
       <div className="App">
         <h1>Counter</h1>
         <p>Counter is at {count}</p>
+        <p>
         <button onClick={incr}>Click to add {delta} to Counter</button>
         <button onClick={reset}>Reset counter</button>
+        </p>
       </div>
     );
   }
